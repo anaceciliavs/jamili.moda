@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Painel de Administração - Jamili Moda</title>
+  <style>
+    body { font-family: 'Poppins', Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    h1 { text-align: center; color: #572d6a; }
+    .produto {
+      background: white; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      padding: 20px; max-width: 450px; margin: 20px auto;
+    }
+    label { display: block; margin-top: 10px; font-weight: 600; color: #572d6a; }
+    input[type="text"], textarea {
+      width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;
+    }
+    textarea { resize: vertical; }
+    input[type="file"] { margin-top: 8px; }
+    img.preview {
+      display: block; max-width: 100%; max-height: 150px; margin-top: 10px;
+      border-radius: 6px; object-fit: contain; border: 1px solid #ddd;
+    }
+    button.salvar {
+      margin-top: 15px; background-color: #572d6a; color: white; border: none;
+      padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 15px;
+      transition: background-color 0.3s ease;
+    }
+    button.salvar:hover { background-color: #7c3ea1; }
+  </style>
+</head>
+<body>
+  <h1>Painel de Administração - Produtos</h1>
+
+  <div class="produto" id="produto1">
+    <h2>Produto 1</h2>
+    <label>Nome do Produto:</label>
+    <input type="text" id="nomeProduto1" placeholder="Nome do produto" />
+
+    <label>Imagem do Produto:</label>
+    <input type="file" id="imagemProduto1" accept="image/*" />
+    <img id="previewProduto1" class="preview" src="fotos/produto1.jpg" alt="Preview Produto 1" />
+
+    <label>Descrição do Produto:</label>
+    <textarea id="descProduto1" rows="4" placeholder="Descrição do produto"></textarea>
+
+    <button class="salvar" onclick="salvarProduto(1)">Salvar Produto 1</button>
+  </div>
+
+  <div class="produto" id="produto2">
+    <h2>Produto 2</h2>
+    <label>Nome do Produto:</label>
+    <input type="text" id="nomeProduto2" placeholder="Nome do produto" />
+
+    <label>Imagem do Produto:</label>
+    <input type="file" id="imagemProduto2" accept="image/*" />
+    <img id="previewProduto2" class="preview" src="fotos/produto2.jpg" alt="Preview Produto 2" />
+
+    <label>Descrição do Produto:</label>
+    <textarea id="descProduto2" rows="4" placeholder="Descrição do produto"></textarea>
+
+    <button class="salvar" onclick="salvarProduto(2)">Salvar Produto 2</button>
+  </div>
+
+  <div class="produto" id="produto3">
+    <h2>Produto 3</h2>
+    <label>Nome do Produto:</label>
+    <input type="text" id="nomeProduto3" placeholder="Nome do produto" />
+
+    <label>Imagem do Produto:</label>
+    <input type="file" id="imagemProduto3" accept="image/*" />
+    <img id="previewProduto3" class="preview" src="fotos/produto3.jpg" alt="Preview Produto 3" />
+
+    <label>Descrição do Produto:</label>
+    <textarea id="descProduto3" rows="4" placeholder="Descrição do produto"></textarea>
+
+    <button class="salvar" onclick="salvarProduto(3)">Salvar Produto 3</button>
+  </div>
+
+  <div class="produto" id="produto4">
+    <h2>Produto 4</h2>
+    <label>Nome do Produto:</label>
+    <input type="text" id="nomeProduto4" placeholder="Nome do produto" />
+
+    <label>Imagem do Produto:</label>
+    <input type="file" id="imagemProduto4" accept="image/*" />
+    <img id="previewProduto4" class="preview" src="fotos/produto4.jpg" alt="Preview Produto 4" />
+
+    <label>Descrição do Produto:</label>
+    <textarea id="descProduto4" rows="4" placeholder="Descrição do produto"></textarea>
+
+    <button class="salvar" onclick="salvarProduto(4)">Salvar Produto 4</button>
+  </div>
+
+  <script>
+    // Função para mostrar preview da imagem ao carregar no input file
+    function previewImagem(input, previewId) {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById(previewId).src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Conectar preview ao input de cada produto
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById(`imagemProduto${i}`).addEventListener('change', function(){
+        previewImagem(this, `previewProduto${i}`);
+      });
+    }
+
+    // Função salvar produto no localStorage
+    function salvarProduto(n) {
+      const nome = document.getElementById(`nomeProduto${n}`).value;
+      const desc = document.getElementById(`descProduto${n}`).value;
+      const imgSrc = document.getElementById(`previewProduto${n}`).src;
+
+      const produto = { nome, descricao: desc, imagem: imgSrc };
+
+      localStorage.setItem(`produto${n}`, JSON.stringify(produto));
+      alert(`Produto ${n} salvo com sucesso!`);
+    }
+
+    // Função para carregar dados do localStorage no painel ao abrir
+    function carregarDados() {
+      for (let i = 1; i <= 4; i++) {
+        const produto = JSON.parse(localStorage.getItem(`produto${i}`));
+        if (produto) {
+          document.getElementById(`nomeProduto${i}`).value = produto.nome;
+          document.getElementById(`descProduto${i}`).value = produto.descricao;
+          document.getElementById(`previewProduto${i}`).src = produto.imagem;
+        }
+      }
+    }
+
+    // Carregar dados ao abrir a página
+    window.onload = carregarDados;
+  </script>
+</body>
+</html>
